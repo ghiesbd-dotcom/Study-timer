@@ -1,212 +1,953 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>مؤقت الدراسة</title>
+<title>خطوتي اليوم</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #101827;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7ff;
+  color: #20243a;
+}
 
-    .container {
-      width: 100%;
-      max-width: 450px;
-      text-align: center;
-    }
+.container {
+  width: 92%;
+  max-width: 680px;
+  margin: auto;
+  padding: 25px 0 45px;
+}
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
+/* العنوان */
 
-    .subtitle {
-      color: #aab4c3;
-      margin-bottom: 30px;
-    }
+header {
+  text-align: center;
+  margin-bottom: 22px;
+}
 
-    .timer {
-      font-size: 65px;
-      font-weight: bold;
-      margin: 30px 0;
-      letter-spacing: 2px;
-    }
+header h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #5b55d9;
+}
 
-    .status {
-      color: #8fa0b5;
-      margin-bottom: 25px;
-    }
+header p {
+  color: #777;
+  margin: 8px 0 0;
+}
 
-    button {
+/* الإحصائيات */
+
+.stats-box {
+  background: white;
+  border-radius: 22px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.stats-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.total-time {
+  color: #5b55d9;
+  font-size: 20px;
+}
+
+.progress {
+  height: 10px;
+  background: #e8e9f2;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #5b55d9;
+  border-radius: 20px;
+  transition: width 0.3s;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: #777;
+  font-size: 14px;
+}
+
+/* إضافة مهمة */
+
+.add-box {
+  background: white;
+  padding: 18px;
+  border-radius: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+textarea {
   width: 100%;
-  padding: 16px;
-  margin: 7px 0;
-  border: none;
-  border-radius: 14px;
-  font-size: 18px;
+  min-height: 85px;
+  resize: vertical;
+  border: 2px solid #e4e5ef;
+  border-radius: 15px;
+  padding: 14px;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: #5b55d9;
+}
+
+.colors {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.color {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+}
+
+.color.selected {
+  border-color: #20243a;
+  transform: scale(1.12);
+}
+
+.purple {
+  background: #8b7cf6;
+}
+
+.blue {
+  background: #55a7ff;
+}
+
+.green {
+  background: #55c98a;
+}
+
+.orange {
+  background: #ffad5c;
+}
+
+.pink {
+  background: #ff7f9c;
+}
+
+#add {
+  width: 100%;
+  border: 0;
+  border-radius: 15px;
+  padding: 14px;
+  background: #5b55d9;
+  color: white;
+  font-size: 17px;
   font-weight: bold;
   cursor: pointer;
 }
 
-#startBtn {
-  background: #22c55e;
+/* المهام */
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.task {
+  background: white;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+  border-right: 6px solid #8b7cf6;
+  transition: 0.25s;
+}
+
+.task.done {
+  opacity: 0.7;
+}
+
+.task-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.check {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #d0d2dd;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 17px;
+}
+
+.task.done .check {
+  background: #55c98a;
+  border-color: #55c98a;
   color: white;
 }
 
-#stopBtn {
-  background: #ef4444;
-  color: white;
+.task-text {
+  flex: 1;
+  font-size: 17px;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
-#resetBtn {
-  background: #334155;
-  color: white;
-}
-.card {
-  background: #1b2638;
-  border-radius: 18px;
-  padding: 20px;
-  margin-top: 25px;
+.task.done .task-text {
+  text-decoration: line-through;
+  color: #777;
 }
 
-.card-title {
-  color: #aab4c3;
-  margin-bottom: 8px;
+.delete {
+  border: 0;
+  background: transparent;
+  color: #aaa;
+  font-size: 22px;
+  cursor: pointer;
 }
 
-.total {
-  font-size: 28px;
+/* المؤقت */
+
+.timer-area {
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.timer {
+  font-size: 23px;
   font-weight: bold;
+  color: #5b55d9;
+  min-width: 100px;
+}
+
+.timer-button {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.start {
+  background: #e4ddff;
+  color: #5147bd;
+}
+
+.pause {
+  background: #fff0d9;
+  color: #a66700;
+}
+
+.reset {
+  background: #f0f0f5;
+  color: #666;
+}
+
+.study-label {
+  width: 100%;
+  color: #888;
+  font-size: 13px;
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 35px 10px;
+}
+
+.motivation {
+  text-align: center;
+  margin-top: 24px;
+  color: #5b55d9;
+  font-weight: bold;
+  font-size: 16px;
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1>📚 مؤقت الدراسة</h1>
+<header>
+  <h1>✨ خطوتي اليوم</h1>
+  <p>أنجز مهمتك واحسب وقتك بنفس الوقت.</p>
+</header>
 
-  <div class="subtitle">
-    ركّز بالدراسة وخلي المؤقت يحسب وقتك
+<!-- الإحصائيات -->
+
+<div class="stats-box">
+
+  <div class="stats-title">
+    <span>⏱️ وقت الدراسة اليوم</span>
+    <span id="totalTime" class="total-time">00:00:00</span>
   </div>
 
-  <div class="timer" id="timer">
-    00:00:00
+  <div class="progress">
+    <div id="progressBar" class="progress-bar"></div>
   </div>
 
-  <div class="status" id="status">
-    جاهز للدراسة
+  <div class="progress-info">
+    <span id="taskCount">0 / 0 مهام</span>
+    <span id="percent">0%</span>
   </div>
 
-  <button id="startBtn" onclick="startStudy()">
-    ▶️ ابدأ الدراسة
-  </button>
+</div>
 
-  <button id="stopBtn" onclick="stopStudy()">
-    ⏹️ إيقاف الدراسة
-  </button>
+<!-- إضافة مهمة -->
 
-  <button id="resetBtn" onclick="resetToday()">
-    🔄 تصفير وقت اليوم
-  </button>
+<div class="add-box">
 
-  <div class="card">
-    <div class="card-title">
-      مجموع دراستك اليوم
-    </div>
+  <textarea
+    id="taskInput"
+    placeholder="اكتب الشي الذي تريد دراسته أو إنجازه... ✍️"
+  ></textarea>
 
-    <div class="total" id="total">
-      00:00:00
-    </div>
+  <div class="colors">
+
+    <button class="color purple selected"
+      data-color="#8b7cf6"></button>
+
+    <button class="color blue"
+      data-color="#55a7ff"></button>
+
+    <button class="color green"
+      data-color="#55c98a"></button>
+
+    <button class="color orange"
+      data-color="#ffad5c"></button>
+
+    <button class="color pink"
+      data-color="#ff7f9c"></button>
+
   </div>
+
+  <button id="add">+ أضف المهمة</button>
+
+</div>
+
+<!-- قائمة المهام -->
+
+<div id="tasks" class="tasks"></div>
+
+<div id="empty" class="empty">
+  🌱 ما عندك مهام لسا...<br>
+  اكتب أول شيء بدك تنجزه اليوم.
+</div>
+
+<div id="motivation" class="motivation"></div>
 
 </div>
 
 <script>
 
-let studying = false;
-let startTime = 0;
-let totalTime = Number(localStorage.getItem("studyTotal")) || 0;
+const input = document.getElementById("taskInput");
+const addButton = document.getElementById("add");
+const tasksContainer = document.getElementById("tasks");
+const empty = document.getElementById("empty");
 
-function formatTime(ms) {
-  let seconds = Math.floor(ms / 1000);
-  let hours = Math.floor(seconds / 3600);
-  let minutes = Math.floor((seconds % 3600) / 60);
-  seconds = seconds % 60;
+const totalTimeElement =
+  document.getElementById("totalTime");
 
-  return String(hours).padStart(2,"0") + ":" +
-         String(minutes).padStart(2,"0") + ":" +
-         String(seconds).padStart(2,"0");
+const taskCount =
+  document.getElementById("taskCount");
+
+const progressBar =
+  document.getElementById("progressBar");
+
+const percentElement =
+  document.getElementById("percent");
+
+const motivation =
+  document.getElementById("motivation");
+
+const colors =
+  document.querySelectorAll(".color");
+
+let selectedColor = "#8b7cf6";
+
+let tasks =
+  JSON.parse(localStorage.getItem("studyTasks")) || [];
+
+
+/* اختيار اللون */
+
+colors.forEach(function(color) {
+
+  color.addEventListener("click", function() {
+
+    colors.forEach(function(item) {
+      item.classList.remove("selected");
+    });
+
+    color.classList.add("selected");
+
+    selectedColor =
+      color.dataset.color;
+
+  });
+
+});
+
+
+/* إضافة مهمة */
+
+addButton.addEventListener("click", addTask);
+
+input.addEventListener("keydown", function(event) {
+
+  if (event.ctrlKey && event.key === "Enter") {
+    addTask();
+  }
+
+});
+
+
+function addTask() {
+
+  const text = input.value.trim();
+
+  if (text === "") {
+    input.focus();
+    return;
+  }
+
+  const task = {
+
+    id: Date.now(),
+
+    text: text,
+
+    color: selectedColor,
+
+    done: false,
+
+    seconds: 0,
+
+    running: false,
+
+    startedAt: null
+
+  };
+
+  tasks.unshift(task);
+
+  saveTasks();
+
+  input.value = "";
+
+  render();
+
 }
 
-function update() {
-  if (!studying) return;
 
-  document.getElementById("timer").textContent =
-    formatTime(Date.now() - startTime);
+/* حفظ البيانات */
 
-  requestAnimationFrame(update);
+function saveTasks() {
+
+  localStorage.setItem(
+    "studyTasks",
+    JSON.stringify(tasks)
+  );
+
 }
 
-function startStudy() {
-  if (studying) return;
 
-  studying = true;
-  startTime = Date.now();
+/* تحويل الثواني إلى وقت */
 
-  document.getElementById("status").textContent =
-    "🟢 عم تدرس الآن...";
+function formatTime(totalSeconds) {
 
-  update();
+  totalSeconds =
+    Math.max(0, Math.floor(totalSeconds));
+
+  const hours =
+    Math.floor(totalSeconds / 3600);
+
+  const minutes =
+    Math.floor((totalSeconds % 3600) / 60);
+
+  const seconds =
+    totalSeconds % 60;
+
+  return (
+
+    String(hours).padStart(2, "0")
+    + ":" +
+    String(minutes).padStart(2, "0")
+    + ":" +
+    String(seconds).padStart(2, "0")
+
+  );
+
 }
 
-function stopStudy() {
-  if (!studying) return;
 
-  totalTime += Date.now() - startTime;
-  localStorage.setItem("studyTotal", totalTime);
+/* حساب الوقت الحالي للمهمة */
 
-  studying = false;
+function getTaskSeconds(task) {
 
-  document.getElementById("timer").textContent =
-    "00:00:00";
+  let seconds = task.seconds || 0;
 
-  document.getElementById("status").textContent =
-    "⏸️ تم إيقاف الدراسة";
+  if (task.running && task.startedAt) {
 
-  document.getElementById("total").textContent =
-    formatTime(totalTime);
+    seconds +=
+      Math.floor(
+        (Date.now() - task.startedAt) / 1000
+      );
+
+  }
+
+  return seconds;
+
 }
 
-function resetToday() {
-  totalTime = 0;
-  localStorage.setItem("studyTotal", 0);
 
-  document.getElementById("total").textContent =
-    "00:00:00";
+/* تشغيل المؤقت */
 
-  document.getElementById("status").textContent =
-    "تم تصفير وقت اليوم";
+function startTimer(id) {
+
+  tasks.forEach(function(task) {
+
+    if (task.id === id) {
+
+      if (!task.running) {
+
+        task.running = true;
+
+        task.startedAt = Date.now();
+
+      }
+
+    }
+
+  });
+
+  saveTasks();
+
+  render();
+
 }
 
-document.getElementById("total").textContent =
-  formatTime(totalTime);
+
+/* إيقاف المؤقت */
+
+function pauseTimer(id) {
+
+  tasks.forEach(function(task) {
+
+    if (task.id === id && task.running) {
+
+      task.seconds =
+        getTaskSeconds(task);
+
+      task.running = false;
+
+      task.startedAt = null;
+
+    }
+
+  });
+
+  saveTasks();
+
+  render();
+
+}
+
+
+/* تصفير مؤقت مهمة */
+
+function resetTimer(id) {
+
+  tasks.forEach(function(task) {
+
+    if (task.id === id) {
+
+      task.seconds = 0;
+
+      task.running = false;
+
+      task.startedAt = null;
+
+    }
+
+  });
+
+  saveTasks();
+
+  render();
+
+}
+
+
+/* إنهاء المهمة */
+
+function toggleDone(id) {
+
+  tasks.forEach(function(task) {
+
+    if (task.id === id) {
+
+      task.done = !task.done;
+
+    }
+
+  });
+
+  saveTasks();
+
+  render();
+
+}
+
+
+/* حذف المهمة */
+
+function deleteTask(id) {
+
+  tasks =
+    tasks.filter(function(task) {
+
+      return task.id !== id;
+
+    });
+
+  saveTasks();
+
+  render();
+
+}
+
+
+/* رسم المهام */
+
+function render() {
+
+  tasksContainer.innerHTML = "";
+
+  if (tasks.length === 0) {
+
+    empty.style.display = "block";
+
+  } else {
+
+    empty.style.display = "none";
+
+  }
+
+  let completed = 0;
+
+  tasks.forEach(function(task) {
+
+    if (task.done) {
+      completed++;
+    }
+
+    const item =
+      document.createElement("div");
+
+    item.className = "task";
+
+    if (task.done) {
+      item.classList.add("done");
+    }
+
+    item.style.borderRightColor =
+      task.color;
+
+
+    /* الجزء العلوي */
+
+    const top =
+      document.createElement("div");
+
+    top.className = "task-top";
+
+
+    /* زر الصح */
+
+    const check =
+      document.createElement("button");
+
+    check.className = "check";
+
+    check.innerHTML =
+      task.done ? "✓" : "";
+
+    check.addEventListener(
+      "click",
+      function() {
+        toggleDone(task.id);
+      }
+    );
+
+
+    /* النص */
+
+    const text =
+      document.createElement("div");
+
+    text.className = "task-text";
+
+    text.textContent =
+      task.text;
+
+
+    /* حذف */
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.className =
+      "delete";
+
+    deleteButton.textContent =
+      "×";
+
+    deleteButton.addEventListener(
+      "click",
+      function() {
+        deleteTask(task.id);
+      }
+    );
+
+
+    top.appendChild(check);
+    top.appendChild(text);
+    top.appendChild(deleteButton);
+
+
+    /* منطقة المؤقت */
+
+    const timerArea =
+      document.createElement("div");
+
+    timerArea.className =
+      "timer-area";
+
+
+    const timer =
+      document.createElement("div");
+
+    timer.className = "timer";
+
+    timer.textContent =
+      formatTime(getTaskSeconds(task));
+
+
+    const label =
+      document.createElement("div");
+
+    label.className =
+      "study-label";
+
+    label.textContent =
+      task.running
+        ? "🔴 يتم حساب وقت الدراسة الآن"
+        : "⏱️ وقت الدراسة لهذه المهمة";
+
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "timer-button " +
+      (task.running ? "pause" : "start");
+
+    button.textContent =
+      task.running ? "⏸ إيقاف" : "▶ ابدأ";
+
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        if (task.running) {
+
+          pauseTimer(task.id);
+
+        } else {
+
+          startTimer(task.id);
+
+        }
+
+      }
+    );
+
+
+    const reset =
+      document.createElement("button");
+
+    reset.className =
+      "timer-button reset";
+
+    reset.textContent =
+      "↻ تصفير";
+
+
+    reset.addEventListener(
+      "click",
+      function() {
+        resetTimer(task.id);
+      }
+    );
+
+
+    timerArea.appendChild(label);
+    timerArea.appendChild(timer);
+    timerArea.appendChild(button);
+    timerArea.appendChild(reset);
+
+
+    item.appendChild(top);
+    item.appendChild(timerArea);
+
+    tasksContainer.appendChild(item);
+
+  });
+
+
+  updateStats(completed);
+
+}
+
+
+/* تحديث الإحصائيات */
+
+function updateStats(completed) {
+
+  const total =
+    tasks.length;
+
+  let totalSeconds = 0;
+
+  tasks.forEach(function(task) {
+
+    totalSeconds +=
+      getTaskSeconds(task);
+
+  });
+
+
+  totalTimeElement.textContent =
+    formatTime(totalSeconds);
+
+
+  taskCount.textContent =
+    completed + " / " +
+    total + " مهام";
+
+
+  let percentage = 0;
+
+  if (total > 0) {
+
+    percentage =
+      Math.round(
+        (completed / total) * 100
+      );
+
+  }
+
+
+  progressBar.style.width =
+    percentage + "%";
+
+  percentElement.textContent =
+    percentage + "%";
+
+
+  if (total === 0) {
+
+    motivation.textContent = "";
+
+  } else if (percentage === 100) {
+
+    motivation.textContent =
+      "🏆 أنجزت كل مهامك! اليوم كان قوي جدًا!";
+
+  } else if (percentage >= 75) {
+
+    motivation.textContent =
+      "🔥 بقي القليل! كمل ولا توقف.";
+
+  } else if (percentage >= 50) {
+
+    motivation.textContent =
+      "💪 وصلت للنصف! استمر.";
+
+  } else if (totalSeconds >= 3600) {
+
+    motivation.textContent =
+      "🧠 أكثر من ساعة دراسة! إنجاز رائع.";
+
+  } else if (totalSeconds >= 1800) {
+
+    motivation.textContent =
+      "👏 نصف ساعة دراسة! بداية ممتازة.";
+
+  } else {
+
+    motivation.textContent =
+      "🚀 ابدأ مؤقت أول مهمة وخلي الإنجاز يبدأ.";
+
+  }
+
+}
+
+
+/* تحديث المؤقتات كل ثانية */
+
+setInterval(function() {
+
+  let hasRunning =
+    tasks.some(function(task) {
+      return task.running;
+    });
+
+  if (hasRunning) {
+
+    render();
+
+  }
+
+}, 1000);
+
+
+/* التشغيل الأول */
+
+render();
 
 </script>
 
